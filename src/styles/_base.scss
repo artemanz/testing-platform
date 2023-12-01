@@ -1,0 +1,35 @@
+@layer base {
+  * {
+    outline: none;
+  }
+
+  body {
+    @apply bg-base text-foreground;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img,
+  picture {
+    vertical-align: middle;
+    font-style: italic;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  pre {
+    font: inherit;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: theme("colors.foreground");
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
