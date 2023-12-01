@@ -35,7 +35,7 @@ const Course = () => {
 
   if (course)
     return (
-      <main className="container h-screen py-8">
+      <main className="container min-h-screen py-8">
         <header className="mb-8">
           <button
             onClick={() => {

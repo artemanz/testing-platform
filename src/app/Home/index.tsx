@@ -16,7 +16,7 @@ const Home = () => {
   }, []);
 
   const Wrapper = ({ children }: PropsWithChildren) => (
-    <main className="container h-screen py-8">
+    <main className="container min-h-screen py-8">
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-secondary">Личный кабинет</h1>
         <button
