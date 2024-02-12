@@ -18,7 +18,7 @@ const Home = () => {
   const Wrapper = ({ children }: PropsWithChildren) => (
     <main className="container min-h-screen py-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-secondary">Личный кабинет</h1>
+        <h1 className="text-4xl ">Личный кабинет</h1>
         <button
           onClick={() => dispatch(logout())}
           className="px-8 py-2 button-secondary"

@@ -44,7 +44,7 @@ const Login = () => {
         onSubmit={submitHandler}
         className="w-full max-w-sm px-8 py-4 mx-auto border border-gray-500 shadow-md"
       >
-        <h1 className="text-4xl text-center font-secondary">ВОЙТИ</h1>
+        <h1 className="text-4xl text-center ">ВОЙТИ</h1>
         <div className="flex flex-col gap-4 mt-4">
           <input
             {...register("login", loginInputProps)}

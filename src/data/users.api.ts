@@ -35,6 +35,12 @@ class API {
             ref: "upravlenie-zakupkami",
             results: [],
           },
+          {
+            attempts: 3,
+            name: "Антитеррористическая безопасность",
+            ref: "antiterror-bezopasnost",
+            results: [],
+          },
         ],
       };
 

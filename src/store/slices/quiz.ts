@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const isQuizStarted = localStorage.getItem("quiz_started")
+const quizStartedId = localStorage.getItem("quiz_started")
   ? JSON.parse(localStorage.getItem("quiz_started")!)
-  : false;
+  : null;
 
 const initialAnswers = localStorage.getItem("answers")
   ? JSON.parse(localStorage.getItem("answers")!)
@@ -10,7 +10,7 @@ const initialAnswers = localStorage.getItem("answers")
 
 type TState = {
   answers: Record<number, number | number[]> | null;
-  isQuizStarted: boolean;
+  quizStartedId: string | null;
 };
 
 type TAnswerPayload = {
@@ -22,7 +22,7 @@ export const quizSlice = createSlice({
   name: "quiz",
   initialState: {
     answers: initialAnswers,
-    isQuizStarted,
+    quizStartedId,
   } as TState,
   reducers: {
     answerQuestion: (
@@ -36,14 +36,14 @@ export const quizSlice = createSlice({
       state.answers = payload;
       localStorage.setItem("answers", JSON.stringify(state.answers));
     },
-    startQuiz: (state) => {
-      localStorage.setItem("quiz_started", JSON.stringify(true));
-      return { ...state, isQuizStarted: true };
+    startQuiz: (state, { payload }: { payload: string }) => {
+      localStorage.setItem("quiz_started", JSON.stringify(payload));
+      return { ...state, quizStartedId: payload };
     },
     finishQuiz: (state) => {
       localStorage.removeItem("quiz_started");
       localStorage.removeItem("answers");
-      return { ...state, answers: null, isQuizStarted: false };
+      return { ...state, answers: null, quizStartedId: null };
     },
   },
 });
@@ -51,5 +51,5 @@ export const quizSlice = createSlice({
 export const { answerQuestion, finishQuiz, startQuiz, initAnswers } =
   quizSlice.actions;
 export const selectQuizStarted = ({ quiz }: { quiz: TState }) =>
-  quiz.isQuizStarted;
+  quiz.quizStartedId;
 export const selectAnswers = ({ quiz }: { quiz: TState }) => quiz.answers;

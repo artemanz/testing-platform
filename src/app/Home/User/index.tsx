@@ -30,14 +30,14 @@ const User = () => {
         <div>
           <h2 className="text-2xl">{user.name}</h2>
           <p className="mt-8 text-xl">Ваши курсы:</p>
-          <ul className="mt-4">
+          <ul className="flex flex-col gap-4 mt-4">
             {courses.map((t) => (
-              <li key={t.id}>
+              <li key={t.id} className="hover:bg-neutral-50">
                 <Link
                   className="flex flex-col p-4 transition-colors border hover:bg-white/10"
                   to={`/course/${t.id}`}
                 >
-                  <p className="text-xl font-bold text-accent">{t.title}</p>
+                  <p className="text-xl font-bold text-primary">{t.title}</p>
                   <p className="mt-4">
                     Дата заключения договора:{" "}
                     <time dateTime="01.11.2023">01.11.2023</time>

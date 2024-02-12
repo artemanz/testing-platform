@@ -3,8 +3,8 @@ import { useCourseData } from "./course.data";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserInfo } from "@/store/slices/auth";
 import { selectQuizStarted, startQuiz } from "@/store/slices/quiz";
-import { BsFiletypePdf, BsFiletypePptx } from "react-icons/bs";
-import { RiFolderVideoLine } from "react-icons/ri";
+// import { BsFiles } from "react-icons/bs";
+import { RiFolderVideoLine, RiFile2Line } from "react-icons/ri";
 
 const Course = () => {
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ const Course = () => {
 
   const dispatch = useDispatch();
   const quizStarted = useSelector(selectQuizStarted);
-
   const { course, error, loading } = useCourseData(params.courseId || "");
 
   const test = user.tests.find((test) => test.ref === params.courseId);
@@ -46,36 +45,39 @@ const Course = () => {
             Назад
           </button>
         </header>
-        <h1 className="text-4xl font-secondary">{course.title}</h1>
+        <h1 className="text-4xl ">{course.title}</h1>
 
         <div className="grid md:grid-cols-[minmax(0,1fr)_20rem] grid-cols-1 mt-12 gap-12">
           <div>
             <div
-              className="leading-relaxed [&_ul]:pl-8 [&_ul]:list-disc [&_span]:font-bold [&_span]:text-accent"
+              className="leading-relaxed [&_ul]:pl-8 [&_ul]:list-disc [&_span]:font-bold [&_span]:text-primary"
               dangerouslySetInnerHTML={{ __html: course.about }}
             ></div>
             <div className="flex flex-col gap-8 mt-8 md:flex-row md:items-center">
               {test && test.attempts > 0 && (
                 <button
+                  disabled={!!quizStarted && params.courseId !== quizStarted}
                   onClick={() => {
-                    dispatch(startQuiz());
+                    dispatch(startQuiz(params.courseId!));
                     navigate("quiz");
                   }}
                   className="px-4 py-2 button"
                 >
-                  {quizStarted
+                  {quizStarted === params.courseId
                     ? "Продолжить тестирование"
                     : "Начать тестирование"}
                 </button>
               )}
               {test && <p>Осталось попыток: {test.attempts}</p>}
             </div>
-
+            {quizStarted && params.courseId !== quizStarted && (
+              <p className="text-red-500">Вы уже начали другой тест</p>
+            )}
             <div className="mt-8">
-              <p className="text-2xl font-secondary">Результаты:</p>
+              <p className="text-2xl ">Результаты:</p>
 
               {test?.results.length ? (
-                <ul className="mt-4">
+                <ul className="mt-4 ">
                   {test.results.map((res, idx) => (
                     <li className="grid grid-cols-2 text-center" key={idx}>
                       <div className="py-2 border">Попытка № {idx + 1}</div>
@@ -90,52 +92,22 @@ const Course = () => {
           </div>
 
           <div className="row-start-1 py-4 border md:row-start-auto">
-            <h2 className="px-4 text-xl font-secondary">Файлы:</h2>
+            <h2 className="px-4 text-xl ">Файлы:</h2>
             <hr className="my-4" />
             <ul className="flex flex-col">
               <li>
                 <a
-                  download={"Теория"}
-                  className="flex items-center gap-4 p-4 transition-colors hover:bg-accent"
-                  href="/теория.pdf"
+                  className="flex items-center gap-4 p-4 transition-colors hover:bg-primary hover:text-white"
+                  href="#"
                 >
-                  <BsFiletypePdf size={32} />
-                  <span>Теория</span>
+                  <RiFile2Line size={32} />
+                  <span>Материалы</span>
                 </a>
               </li>
+
               <li>
                 <a
-                  download={"Практика"}
-                  className="flex items-center gap-4 p-4 transition-colors hover:bg-accent"
-                  href="/практика.pdf"
-                >
-                  <BsFiletypePdf size={32} />
-                  <span>Практика</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  download={"Вопросы"}
-                  className="flex items-center gap-4 p-4 transition-colors hover:bg-accent"
-                  href="/вопросы.pdf"
-                >
-                  <BsFiletypePdf size={32} />
-                  <span>Вопросы</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  download={"Презентация.pptx"}
-                  className="flex items-center gap-4 p-4 transition-colors hover:bg-accent"
-                  href="/презентация.pptx"
-                >
-                  <BsFiletypePptx size={32} />
-                  <span>Презентация</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="flex items-center gap-4 p-4 transition-colors hover:bg-accent"
+                  className="flex items-center gap-4 p-4 transition-colors hover:bg-primary hover:text-white"
                   href="#"
                 >
                   <RiFolderVideoLine size={32} />

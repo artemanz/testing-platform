@@ -57,7 +57,7 @@ export const Test = ({ quiz }: { quiz: TCourse["quiz"] }) => {
   return (
     <main className="container h-screen py-8">
       <div className="flex flex-col w-full h-full">
-        <p className="text-2xl font-secondary">
+        <p className="text-2xl ">
           ВОПРОС: {currentQuiz.id} / {quiz.length}
         </p>
         <div className="p-2 mt-4 border">{currentQuiz.text}</div>
@@ -71,7 +71,7 @@ export const Test = ({ quiz }: { quiz: TCourse["quiz"] }) => {
                     checked={(answers[currentQuiz.id] as number[]).includes(
                       option.id
                     )}
-                    className="checkbox checkbox-accent"
+                    className="text-white checkbox checkbox-primary"
                     type="checkbox"
                     onChange={(e) => {
                       let answer = [...(answers[currentQuiz.id] as number[])];
@@ -88,7 +88,7 @@ export const Test = ({ quiz }: { quiz: TCourse["quiz"] }) => {
                   />
                 ) : (
                   <input
-                    className="radio radio-accent"
+                    className="radio radio-primary"
                     type="radio"
                     name={String(currentQuiz.id)}
                     onChange={() =>
@@ -121,7 +121,7 @@ export const Test = ({ quiz }: { quiz: TCourse["quiz"] }) => {
           <nav className="flex flex-wrap justify-center gap-2">
             {quiz.map((q, idx) => (
               <button
-                className={idx === currentIndex ? "text-accent" : ""}
+                className={idx === currentIndex ? "text-primary" : ""}
                 key={q.id}
                 onClick={() => setCurrentIndex(idx)}
               >
@@ -130,7 +130,7 @@ export const Test = ({ quiz }: { quiz: TCourse["quiz"] }) => {
             ))}
           </nav>
           {currentIndex === quiz.length - 1 ? (
-            <button onClick={() => finishTest()} className="w-24 h-8 button">
+            <button onClick={() => finishTest()} className="h-8 w-28 button">
               Завершить
             </button>
           ) : (
