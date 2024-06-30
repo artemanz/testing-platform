@@ -15,6 +15,7 @@ export default {
         foreground: "#292929",
         accent: "#fd204c",
         primary: "#448ac0",
+        "primary-light": "#f1f4f8",
       },
     },
   },
@@ -24,6 +25,7 @@ export default {
       {
         mytheme: {
           primary: "#448ac0",
+          accent: "#fd204c",
         },
       },
     ],

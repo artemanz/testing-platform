@@ -1,6 +1,6 @@
 import { getDocs, collection, getDoc, doc } from "firebase/firestore";
 import { db } from "./db";
-import { TCourse, TFirebaseCourse } from "@/@types/course.type";
+import { CoursesID, TCourse, TFirebaseCourse } from "@/@types/course.type";
 
 class API {
   async getQuiz(id: string): Promise<TCourse["quiz"] | Error> {
@@ -16,7 +16,7 @@ class API {
       if (!snap.exists()) throw new Error("Курс с таким ID не найден");
       const data = snap.data() as TFirebaseCourse;
 
-      return { id: snap.id, ...data };
+      return { id: snap.id as CoursesID, ...data };
     } catch (error: any) {
       return error;
     }

@@ -20,48 +20,62 @@ class API {
       if (newUser) throw new Error("Пользователь уже существует");
 
       const currentDate = new Date();
-      currentDate.setDate(currentDate.getDate() + 14);
+      const expiredDate = new Date();
+      expiredDate.setDate(expiredDate.getDate() + 14);
 
       newUser = {
         login,
         name,
         password,
-        expired: Timestamp.fromDate(currentDate),
+        created: Timestamp.fromDate(currentDate),
+        expired: Timestamp.fromDate(expiredDate),
         role: "user",
-        tests: [
-          {
-            attempts: 3,
-            name: "Управление закупками",
-            ref: "upravlenie-zakupkami",
-            results: [],
-          },
-          {
-            attempts: 3,
-            name: "Антитеррористическая безопасность",
-            ref: "antiterror-bezopasnost",
-            results: [],
-          },
-        ],
+        courses: [],
       };
+
+      // if (tests.includes("upravlenie-zakupkami"))
+      //   newUser.tests.push({
+      //     attempts: 3,
+      //     name: "Управление закупками",
+      //     ref: "upravlenie-zakupkami",
+      //     results: [],
+      //   });
+
+      // if (tests.includes("antiterror-bezopasnost"))
+      //   newUser.tests.push({
+      //     attempts: 3,
+      //     name: "Антитеррористическая безопасность",
+      //     ref: "antiterror-bezopasnost",
+      //     results: [],
+      //   });
 
       const docRef = await addDoc(collection(db, "users"), newUser);
 
-      return { id: docRef.id, ...newUser, expired: currentDate.getTime() };
+      return {
+        id: docRef.id,
+        ...newUser,
+        expired: expiredDate.getTime(),
+        created: currentDate.getTime(),
+      };
     } catch (error: any) {
       return { error: error.message };
     }
   }
 
   async deleteUser(login: string) {
-    const snap = await getDocs(
-      query(collection(db, "users"), where("login", "==", login))
-    );
+    try {
+      const snap = await getDocs(
+        query(collection(db, "users"), where("login", "==", login))
+      );
 
-    if (snap.empty) return false;
+      if (snap.empty) return false;
 
-    const doc = snap.docs[0].ref;
-    await deleteDoc(doc);
-    return true;
+      const doc = snap.docs[0].ref;
+      await deleteDoc(doc);
+      return true;
+    } catch (error) {
+      return null;
+    }
   }
 
   async login({ login, password }: { login: string; password: string }) {
@@ -77,7 +91,12 @@ class API {
 
         if (password !== data.password) throw new Error("Неверный пароль");
 
-        return { id: s.id, ...data, expired: data.expired.toDate().getTime() };
+        return {
+          id: s.id,
+          ...data,
+          expired: data.expired.toDate().getTime(),
+          created: data.created.toDate().getTime(),
+        };
       }
     } catch (error: any) {
       return { error: error.message };
@@ -98,6 +117,7 @@ class API {
         ...data,
         id: s.id,
         expired: data.expired.toDate().getTime(),
+        created: data.created.toDate().getTime(),
       };
     } catch (error) {
       return null;
@@ -108,17 +128,20 @@ class API {
     try {
       const snap = await getDocs(collection(db, "users"));
 
-      if (snap.empty) throw new Error();
-      return snap.docs.map((s) => {
-        const data = s.data() as TFirebaseUser;
-        return {
-          ...data,
-          id: s.id,
-          expired: data.expired.toDate().getTime(),
-        };
-      });
+      if (snap.empty) return [];
+      return snap.docs
+        .map((s) => {
+          const data = s.data() as TFirebaseUser;
+          return {
+            ...data,
+            id: s.id,
+            expired: data.expired.toDate().getTime(),
+            created: data.created.toDate().getTime(),
+          };
+        })
+        .reverse();
     } catch (error) {
-      return [];
+      return null;
     }
   }
 
@@ -128,6 +151,7 @@ class API {
       await setDoc(doc(db, "users", updatedUser.id), {
         ...updatedUser,
         expired: Timestamp.fromDate(new Date(updatedUser.expired)),
+        created: Timestamp.fromDate(new Date(updatedUser.created)),
       });
       return true;
     } catch (error) {

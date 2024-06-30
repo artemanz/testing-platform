@@ -10,10 +10,9 @@ const Quiz = () => {
   const { quiz, loading, error } = useQuizData(params.courseId!);
   const user = useSelector(selectUserInfo)!;
   const quizStarted = useSelector(selectQuizStarted);
-  const test = user.tests.find((t) => t.ref === params.courseId);
+  const test = user.courses.find((t) => t.ref === params.courseId);
 
-  if (!test?.attempts) return <Navigate to={`/course/${params.courseId}`} />;
-  if (params.courseId !== quizStarted)
+  if (!test?.attempts || params.courseId !== quizStarted)
     return <Navigate to={`/course/${params.courseId}`} />;
 
   if (loading)

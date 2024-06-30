@@ -1,46 +1,48 @@
-import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUserInfo, setCredentials } from "@/store/slices/auth";
-import { PropsWithChildren, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectUserInfo } from "@/store/slices/auth";
 import { Admin } from "./Admin";
 import { User } from "./User";
-import { usersApi } from "@/data/users.api";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import bg from "@/assets/bg.jpg";
 
 const Home = () => {
   const user = useSelector(selectUserInfo)!;
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    usersApi.getUser(user.login).then((data) => {
-      dispatch(setCredentials(data));
-    });
-  }, []);
-
-  const Wrapper = ({ children }: PropsWithChildren) => (
-    <main className="container min-h-screen py-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-4xl ">Личный кабинет</h1>
-        <button
-          onClick={() => dispatch(logout())}
-          className="px-8 py-2 button-secondary"
-        >
-          Выйти
-        </button>
-      </div>
-      {children}
-    </main>
-  );
 
   if (user.role === "admin")
     return (
-      <Wrapper>
-        <Admin />
-      </Wrapper>
+      <div className="grid min-h-screen grid-rows-[auto_1fr_auto]">
+        <Header />
+        <main className="py-8">
+          <div className="container">
+            <Admin />
+          </div>
+        </main>
+
+        <Footer />
+      </div>
     );
 
   return (
-    <Wrapper>
-      <User />
-    </Wrapper>
+    <div className="grid min-h-screen grid-rows-[auto_1fr_auto]">
+      <Header />
+      <main>
+        <div
+          className="h-[15rem] text-white bg-no-repeat bg-cover"
+          style={{ backgroundImage: `url(${bg})` }}
+        >
+          <div className="container flex items-center h-full">
+            <h1 className="text-4xl">Личный кабинет</h1>
+          </div>
+        </div>
+
+        <div className="container py-8">
+          <User />
+        </div>
+      </main>
+
+      <Footer />
+    </div>
   );
 };
 

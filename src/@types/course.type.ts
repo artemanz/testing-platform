@@ -1,5 +1,7 @@
+export type CoursesID = "upravlenie-zakupkami" | "antiterror-bezopasnost";
+
 export type TCourse = {
-  id: string;
+  id: CoursesID;
   about: string;
   title: string;
   quiz: {

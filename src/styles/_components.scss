@@ -29,12 +29,21 @@
 
     &-secondary {
       @extend .button;
-      @apply border border-primary text-primary bg-transparent;
+      @apply border border-primary text-primary bg-transparent transition-opacity;
+
+      &:disabled {
+        @apply opacity-50 pointer-events-none;
+      }
 
       &:hover,
       &:focus {
         @apply bg-primary/90 text-white;
       }
+    }
+
+    &-danger {
+      @extend .button;
+      @apply bg-red-500 hover:bg-red-400 focus:bg-red-400;
     }
   }
 }

@@ -1,16 +1,16 @@
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Home, Login, Course, Protected } from "./app/index";
-import { Layout } from "./app/Layout";
 
 import { Quiz } from "./app/Course/components";
 
 import { store } from "./store";
 import { Provider } from "react-redux";
+import { RootProvider } from "./app/RootProvider";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <RootProvider />,
     errorElement: <div>Router error...</div>,
     children: [
       {

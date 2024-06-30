@@ -1,3 +1,4 @@
+import { CoursesID } from "@/@types/course.type";
 import { TUser } from "@/@types/user.type";
 import { usersApi } from "@/data/users.api";
 import { createSlice } from "@reduxjs/toolkit";
@@ -18,27 +19,34 @@ export const authSlice = createSlice({
       state.userInfo = action.payload;
       localStorage.setItem("user", JSON.stringify(action.payload));
     },
+    updateAttempts: (state, { payload }: { payload: CoursesID }) => {
+      const test = state.userInfo?.courses.find((t) => t.ref === payload);
+
+      if (test) test.attempts--;
+
+      localStorage.setItem("user", JSON.stringify(state.userInfo));
+      usersApi.updateUser(state.userInfo!);
+    },
     updateResults: (
       state,
       { payload }: { payload: { courseId: string; result: string } }
     ) => {
-      const test = state.userInfo?.tests.find(
+      const test = state.userInfo?.courses.find(
         (t) => t.ref === payload.courseId
       );
 
-      if (test) {
-        test.attempts--;
-        test.results.push(payload.result);
-      }
+      if (test) test.results.push(payload.result);
+
       localStorage.setItem("user", JSON.stringify(state.userInfo));
       usersApi.updateUser(state.userInfo!);
     },
     logout: (state) => {
       state.userInfo = null;
-      localStorage.removeItem("user");
+      localStorage.clear();
     },
   },
 });
 
-export const { setCredentials, logout, updateResults } = authSlice.actions;
+export const { setCredentials, logout, updateResults, updateAttempts } =
+  authSlice.actions;
 export const selectUserInfo = ({ auth }: { auth: TState }) => auth.userInfo;

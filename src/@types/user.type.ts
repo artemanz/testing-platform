@@ -1,4 +1,5 @@
 import { Timestamp } from "firebase/firestore";
+import { CoursesID } from "./course.type";
 
 export type TUser = {
   id: string;
@@ -6,15 +7,17 @@ export type TUser = {
   name: string;
   password: string;
   role: "user" | "admin";
+  created: number;
   expired: number;
-  tests: {
+  courses: {
+    ref: CoursesID;
     attempts: number;
-    ref: string;
-    name: string
     results: string[];
   }[];
 };
 
 export type TFirebaseUser = {
-  [K in Exclude<keyof TUser, "id">]: K extends "expired" ? Timestamp : TUser[K];
+  [K in Exclude<keyof TUser, "id">]: K extends "expired" | "created"
+    ? Timestamp
+    : TUser[K];
 };
