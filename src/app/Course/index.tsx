@@ -111,7 +111,7 @@ const Course = () => {
                 <li>
                   <a
                     className="flex items-center gap-4 p-4 transition-colors hover:bg-primary hover:text-white"
-                    href="https://disk.yandex.ru/d/jQwYjMzuWIfrkA"
+                    href={course.link}
                     target="_blank"
                   >
                     <RiFile2Line size={32} />

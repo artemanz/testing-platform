@@ -4,6 +4,7 @@ export type TCourse = {
   id: CoursesID;
   about: string;
   title: string;
+  link: string
   quiz: {
     id: number;
     text: string;
